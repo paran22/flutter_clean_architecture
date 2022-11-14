@@ -10,16 +10,10 @@ void main() {
     final viewModel = HomeViewModel(repository: FakephotoApiRepository());
 
     await viewModel.fetch('apple');
-    await viewModel.fetch('sky');
 
-    expect(
-      viewModel.photoStream,
-      emitsInOrder([
-        equals([]),
-        equals(fakeJson.map((e) => Photo.fromJson(e)).toList()),
-        equals(fakeJson.map((e) => Photo.fromJson(e)).toList()),
-      ]),
-    );
+    final List<Photo> result = fakeJson.map((e) => Photo.fromJson(e)).toList();
+
+    expect(viewModel.photos, result);
   });
 }
 
