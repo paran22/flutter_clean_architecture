@@ -1,9 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:image_search/data/pixabay_api.dart';
-import 'package:image_search/data/photo_provider.dart';
-import 'package:image_search/model/photo.dart';
-import 'package:image_search/model/ui/home_view_model.dart';
-import 'package:image_search/model/ui/widget/photo_widget.dart';
+import 'package:image_search/presentation/home/components/photo_widget.dart';
+import 'package:image_search/presentation/home/home_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,11 +16,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final controller = TextEditingController();
+  StreamSubscription? _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      final viewModel = context.read<HomeViewModel>();
+      viewModel.eventStream.listen((event) {
+        event.when(showSnackBar: (message) {
+          final snackBar = SnackBar(
+            content: Text(message),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+      });
+    });
+  }
 
   @override
   void dispose() {
-    super.dispose();
+    _subscription?.cancel();
     controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -67,8 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: viewModel.photos.length,
-              gridDelegate:
-              const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
