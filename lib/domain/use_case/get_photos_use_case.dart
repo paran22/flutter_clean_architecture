@@ -12,7 +12,8 @@ class GetPhotosUseCase {
   });
 
   //일반적으로 인터페이스 사용
-  Future<Result<List<Photo>>> excute(String query) async {
+  //call은 생략이 가능
+  Future<Result<List<Photo>>> call(String query) async {
     final result = await repository.fetch(query);
     return result.when(success: (photos) {
       return Result.success(photos.sublist(0, min(3, photos.length)));

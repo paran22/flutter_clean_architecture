@@ -25,7 +25,7 @@ class HomeViewModel with ChangeNotifier {
   Future<void> fetch(String query) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-    final result = await getPhotosUseCase.excute(query);
+    final result = await getPhotosUseCase(query);
 
     result.when(success: (photos) {
       _state = state.copyWith(photos: photos);
