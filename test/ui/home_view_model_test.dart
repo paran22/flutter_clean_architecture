@@ -2,13 +2,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_search/data/data_source/result.dart';
 import 'package:image_search/domain/repository/photo_api_repository.dart';
 import 'package:image_search/domain/model/photo.dart';
+import 'package:image_search/domain/use_case/get_photos_use_case.dart';
 import 'package:image_search/presentation/home/home_view_model.dart';
 
 void main() {
   test('Stream이 잘 동작해야 한다', () async {
     //PixabayApi를 직접 사용하면, PixabayApi를 의존하고 있기 때문에 불완전한 테스트임
     //인터페이스를 사용해서 Fake객체를 넣어줌
-    final viewModel = HomeViewModel(repository: FakephotoApiRepository());
+    final viewModel = HomeViewModel(
+        getPhotosUseCase:
+            GetPhotosUseCase(repository: FakephotoApiRepository()));
 
     await viewModel.fetch('apple');
 
