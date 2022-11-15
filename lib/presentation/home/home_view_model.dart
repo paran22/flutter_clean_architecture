@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:image_search/domain/repository/photo_api_repository.dart';
 import 'package:image_search/domain/use_case/get_photos_use_case.dart';
 import 'package:image_search/presentation/home/home_state.dart';
 import 'package:image_search/presentation/home/home_ui_event.dart';
